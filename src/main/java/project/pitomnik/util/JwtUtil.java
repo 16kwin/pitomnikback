@@ -21,10 +21,10 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}") 
+    @Value("${jwt.expiration}")
     private long jwtExpiration;
 
-    @Value("${jwt.refresh.expiration}") 
+    @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
 
 
@@ -95,5 +95,20 @@ public class JwtUtil {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    // Add this method
+    public String getUserNameFromJwtToken(String token) {
+        return extractUsername(token); // Reuse extractUsername
+    }
+
+    // Add this method
+    public boolean validateToken(String token) {
+        try {
+            extractAllClaims(token); // This will throw an exception if the token is invalid
+            return !isTokenExpired(token); // Check if the token is expired
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
