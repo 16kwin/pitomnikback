@@ -95,18 +95,16 @@ public class JwtUtil {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
-    }
 
-    // Add this method
     public String getUserNameFromJwtToken(String token) {
-        return extractUsername(token); // Reuse extractUsername
+        return extractUsername(token); 
     }
 
     // Add this method
     public boolean validateToken(String token) {
         try {
-            extractAllClaims(token); // This will throw an exception if the token is invalid
-            return !isTokenExpired(token); // Check if the token is expired
+            extractAllClaims(token); 
+            return !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }

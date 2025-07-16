@@ -36,9 +36,6 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
-    //Remove Autowired annotation
-    //@Autowired
-    //private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -47,13 +44,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((csrf) -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Disable CSRF (in most cases for APIs)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/register").permitAll()
-                        .requestMatchers("/login").permitAll() // Разрешаем доступ к странице регистрации
-                        .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
+                        .requestMatchers("/login").permitAll() 
+                        .anyRequest().authenticated() 
                 )
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) // Use the bean method
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(withDefaults())
                 .formLogin((form) -> form.disable());
@@ -80,13 +77,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Разрешенные домены
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Разрешенные методы
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control")); // Разрешенные заголовки
-        configuration.setAllowCredentials(true); // Разрешить отправку куки и заголовков авторизации
-
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); 
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); 
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control")); 
+        configuration.setAllowCredentials(true); 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Применяем конфигурацию CORS ко всем URL
+        source.registerCorsConfiguration("/**", configuration); 
         return source;
     }
 }

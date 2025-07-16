@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap; // Import HashMap
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,7 +30,7 @@ public class MainController {
         List<Main> animals = mainService.getAllAnimals();
         List<Map<String, Object>> animalNames = animals.stream()
                 .map(animal -> {
-                    Map<String, Object> map = new HashMap<>(); // Use HashMap
+                    Map<String, Object> map = new HashMap<>();
                     map.put("id", animal.getUID());
                     map.put("name", animal.getName());
                     return map;
